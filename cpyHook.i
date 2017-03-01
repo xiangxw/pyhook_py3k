@@ -9,8 +9,8 @@
     #define PY3K
   #endif
 
-  PyObject* callback_funcs[WH_MAX];
-  HHOOK hHooks[WH_MAX];
+  PyObject* callback_funcs[WH_MAX + 1];
+  HHOOK hHooks[WH_MAX + 1];
   BYTE key_state[256];
 %}
 
@@ -26,8 +26,8 @@
 
 %init %{
   memset(key_state, 0, 256);
-  memset(callback_funcs, 0, WH_MAX);
-  memset(hHooks, 0, WH_MAX);
+  memset(callback_funcs, 0, (WH_MAX + 1) * sizeof(PyObject*));
+  memset(hHooks, 0, (WH_MAX + 1) * sizeof(HHOOK));
   PyEval_InitThreads();
   
   // get initial key state
